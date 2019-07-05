@@ -1,18 +1,64 @@
+import React from 'react';
+import { Statistic, Card, Row, Col, Icon } from 'antd'
 import styles from './index.css';
+import { connect } from 'dva'
 
+const mapStateToProps = (state) => {
+  const cardList = state['analysis'];
+  return {
+    cardList,
+  };
+};
 
-export default function() {
+export default function () {
   return (
-    <div className={styles.normal}>
-      <div className={styles.welcome} />
-      <ul className={styles.list}>
-        <li>To get started, edit <code>src/pages/index.js</code> and save to reload.</li>
-        <li>
-          <a href="https://umijs.org/guide/getting-started.html">
-            Getting Started
-          </a>
-        </li>
-      </ul>
+    <div>
+      <Row gutter={16}>
+        <Col span={6}>
+          <Card>
+            <Statistic
+              title="今日打卡"
+              value={12}
+              valueStyle={{ color: '#3f8600' }}
+              prefix={<Icon type="arrow-up" />}
+              suffix="人"
+            />
+          </Card>
+        </Col>
+        <Col span={6}>
+          <Card>
+            <Statistic
+              title="本周打卡"
+              value={45}
+              valueStyle={{ color: '#cf1322' }}
+              prefix={<Icon type="arrow-down" />}
+              suffix="人"
+            />
+          </Card>
+        </Col>
+        <Col span={6}>
+          <Card>
+            <Statistic
+              title="本周打卡"
+              value={45}
+              valueStyle={{ color: '#cf1322' }}
+              prefix={<Icon type="arrow-down" />}
+              suffix="人"
+            />
+          </Card>
+        </Col>
+        <Col span={6}>
+          <Card>
+            <Statistic
+              title="本周打卡"
+              value={45}
+              valueStyle={{ color: '#cf1322' }}
+              prefix={<Icon type="arrow-down" />}
+              suffix="人"
+            />
+          </Card>
+        </Col>
+      </Row>
     </div>
   );
 }
