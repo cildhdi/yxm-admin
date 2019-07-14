@@ -21,3 +21,8 @@
 .list code {
   background: #f7f7f7;
 }
+
+.chart{
+  width: 100%;
+  height: 300px;
+}

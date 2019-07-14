@@ -10,7 +10,7 @@ export default {
       dynamicImport: false,
       title: 'yxm-admin',
       dll: false,
-      
+
       routes: {
         exclude: [
           /models\//,
@@ -22,4 +22,10 @@ export default {
       },
     }],
   ],
+  proxy: {
+    "/admin": {
+      "target": "https://yxm.cildhdi.cn/api/",
+      "changeOrigin": true,
+    }
+  }
 }
