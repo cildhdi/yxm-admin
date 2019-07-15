@@ -1,5 +1,5 @@
 import urls from '../urls'
-import moment from 'moment';
+import { message } from 'antd'
 
 const oneDay = 24 * 60 * 60;
 
@@ -9,6 +9,9 @@ export default {
         todayCount: 0,
         weekCount: 0,
         monthCount: 0,
+        allCount: 0,
+        articleCount: 0,
+        userCount: 0,
         range: [],
         readlogs: []
     },
@@ -31,15 +34,40 @@ export default {
                 }
                 return 0;
             }
+            const hide = message.loading("加载统计数据中");
+            let userCount = 0, articleCount = 0;
+            let res = yield call(fetch, urls.userCount, {
+                method: 'post'
+            });
+            if (res.ok) {
+                let rj = yield res.json();
+                if (rj.code === 0) {
+                    userCount = rj.data;
+                }
+            }
+
+            res = yield call(fetch, urls.articleCount, {
+                method: 'post'
+            });
+            if (res.ok) {
+                let rj = yield res.json();
+                if (rj.code === 0) {
+                    articleCount = rj.data;
+                }
+            }
 
             yield put({
                 type: 'setCounts',
                 payload: {
                     todayCount: yield getCount(oneDay),
                     weekCount: yield getCount(oneDay * 7),
-                    monthCount: yield getCount(oneDay * 30)
+                    monthCount: yield getCount(oneDay * 30),
+                    allCount: yield getCount((Date.now() - Date.parse('2019-06-01')) / 1000),
+                    userCount: userCount,
+                    articleCount: articleCount
                 }
             });
+            hide();
         },
         *queryReadlogs({ payload }, { call, put }) {
             const { range } = payload;
@@ -56,7 +84,6 @@ export default {
             });
             if (res.ok) {
                 let rj = yield res.json();
-                console.log(rj);
                 if (rj.code === 0) {
                     yield put({
                         type: 'setReadlogs',
@@ -68,11 +95,9 @@ export default {
     },
     reducers: {
         setCounts(state, { payload: newCounts }) {
-            const newReadlogs = state.readlogs.concat([]);
             return {
                 ...state,
                 ...newCounts,
-                readlogs: newReadlogs
             };
         },
         setReadlogs(state, { payload: newReadlogs }) {

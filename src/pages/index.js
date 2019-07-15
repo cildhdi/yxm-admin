@@ -1,10 +1,14 @@
 import React from 'react';
-import { Statistic, Card, Row, Col, Icon, DatePicker, Divider } from 'antd'
-import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, ResponsiveContainer, AreaChart, Area } from 'recharts';
-import './index.css';
+import { Statistic, Card, Row, Col, DatePicker, Divider } from 'antd'
+import {
+  Chart,
+  Geom,
+  Axis,
+  Tooltip,
+  Legend,
+} from "bizcharts";
 import { connect } from 'dva'
 import moment from 'moment';
-const oneDay = 24 * 60 * 60;
 const namespace = 'analysis';
 
 const mapStateToProps = (state) => {
@@ -58,67 +62,102 @@ class Analysis extends React.Component {
     this.props.dateChange(dateStrings.map(v => v.substr(0, 10)));
   }
 
+  scale = {
+    count: {
+      type: 'linear',
+      alias: '打卡数',
+      min: 0,
+    },
+    date: {
+      type: 'timeCat',
+      alias: '日期'
+    }
+  }
+
   render() {
     return (<div>
       <Row gutter={16}>
-        <Col span={6}>
+        <Col span={4}>
           <Card>
             <Statistic
               title="一天内打卡"
               value={this.props.todayCount}
               valueStyle={this.props.todayCount === 0 ? { color: '#cf1322' } : { color: '#3f8600' }}
-              suffix="人"
+              suffix="次"
             />
           </Card>
         </Col>
-        <Col span={6}>
+        <Col span={4}>
           <Card>
             <Statistic
               title="一周内打卡"
               value={this.props.weekCount}
               valueStyle={this.props.weekCount === 0 ? { color: '#cf1322' } : { color: '#3f8600' }}
-              suffix="人"
+              suffix="次"
             />
           </Card>
         </Col>
-        <Col span={6}>
+        <Col span={4}>
           <Card>
             <Statistic
               title="一月内打卡"
               value={this.props.monthCount}
               valueStyle={this.props.monthCount === 0 ? { color: '#cf1322' } : { color: '#3f8600' }}
-              suffix="人"
+              suffix="次"
             />
           </Card>
         </Col>
-        <Col span={6}>
+        <Col span={4}>
+          <Card>
+            <Statistic
+              title="总打卡"
+              value={this.props.allCount}
+              valueStyle={this.props.allCount === 0 ? { color: '#cf1322' } : { color: '#3f8600' }}
+              suffix="次"
+            />
+          </Card>
+        </Col>
+        <Col span={4}>
+          <Card>
+            <Statistic
+              title="文章数量"
+              value={this.props.articleCount}
+              suffix="篇"
+            />
+          </Card>
+        </Col>
+        <Col span={4}>
           <Card>
             <Statistic
               title="用户数量"
-              value={45}
+              value={this.props.userCount}
               suffix="人"
             />
           </Card>
         </Col>
       </Row>
       <Divider type='horizontal' />
-      <div style={{ marginTop: 20, marginBottom: 50 }}>
+      <div style={{ marginTop: 20, marginBottom: 50, backgroundColor: '#fff', padding: 20 }}>
         <DatePicker.RangePicker onChange={this.dateChange} value={this.props.range.map(v => {
           return moment(v, 'YYYY-MM-DD');
         })} />
         <Divider type='vertical' />
         <span>该区间记录数： {this.props.readlogs.length}</span>
+        <div style={{ height: 20 }} />
+        <Chart
+          data={this.props.chartData}
+          padding={"auto"}
+          forceFit
+          scale={this.scale}
+          height={400}
+        >
+          <Tooltip crosshairs />
+          <Axis name="date" title />
+          <Axis name="count" title />
+          <Legend />
+          <Geom type="area" position="date*count" color="type" shape="smooth" />
+        </Chart>
       </div>
-
-        <ResponsiveContainer width="100%" height={200}>
-          <AreaChart data={this.props.chartData}>
-            <XAxis dataKey="date" />
-            <YAxis />
-            <CartesianGrid strokeDasharray="3 3" />
-            <Tooltip />
-            <Area type="monotone" dataKey="count" stroke="#8884d8" fill="#8884d8" />
-          </AreaChart>
-        </ResponsiveContainer>
     </div>);
   }
 }

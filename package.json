@@ -9,10 +9,11 @@
   },
   "dependencies": {
     "antd": "^3.19.5",
+    "bizcharts": "^3.5.4",
     "dva": "^2.6.0-beta.6",
+    "marked": "^0.7.0",
     "react": "^16.8.6",
-    "react-dom": "^16.8.6",
-    "recharts": "^1.6.2"
+    "react-dom": "^16.8.6"
   },
   "devDependencies": {
     "babel-eslint": "^9.0.0",

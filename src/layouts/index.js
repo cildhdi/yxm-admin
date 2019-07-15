@@ -1,5 +1,5 @@
 import React from 'react';
-import { Layout, Menu, Icon } from 'antd';
+import { Layout, Menu, Icon, Divider } from 'antd';
 import styles from './index.css';
 import Link from 'umi/link';
 import { LocaleProvider } from 'antd';
@@ -35,12 +35,16 @@ export default class BasicLayout extends React.Component {
                 </Link>
               </Menu.Item>
               <Menu.Item key="article">
-                <Icon type="file-text" />
-                <span>文章列表</span>
+                <Link to="/article">
+                  <Icon type="file-text" />
+                  <span>文章列表</span>
+                </Link>
               </Menu.Item>
               <Menu.Item key="user">
-                <Icon type="user" />
-                <span>用户列表</span>
+                <Link to="/user">
+                  <Icon type="user" />
+                  <span>用户列表</span>
+                </Link>
               </Menu.Item>
             </Menu>
           </Sider>
@@ -53,11 +57,12 @@ export default class BasicLayout extends React.Component {
               />
             </Header>
             <Content
-              style={{ margin: '24px 16px', padding: 24, background: '#fff', minHeight: 280 }}
+              style={{ margin: '24px 16px', padding: 24, minHeight: 280 }}
             >
               {this.props.children}
+              <Divider type='horizontal' />
+              <Footer style={{ textAlign: 'center' }}>上大英协</Footer>
             </Content>
-            <Footer style={{ textAlign: 'center' }}>上大英协</Footer>
           </Layout>
         </Layout>
       </LocaleProvider>
