@@ -27,6 +27,11 @@ export default class BasicLayout extends React.Component {
       <LocaleProvider locale={zh_CN}>
         <Layout style={{ height: '100%' }}>
           <Sider trigger={null} collapsible={true} collapsed={this.state.collapsed}>
+            <div style={{
+              height: 32,
+              background: 'rgba(255, 255, 255, 0.2)',
+              margin: 16,
+            }} />
             <Menu theme='dark' mode="inline" defaultSelectedKeys={['analysis']}>
               <Menu.Item key="analysis">
                 <Link to="/">
@@ -38,6 +43,12 @@ export default class BasicLayout extends React.Component {
                 <Link to="/article">
                   <Icon type="file-text" />
                   <span>文章列表</span>
+                </Link>
+              </Menu.Item>
+              <Menu.Item key="publish">
+                <Link to="/publish">
+                  <Icon type="upload" />
+                  <span>文章发布</span>
                 </Link>
               </Menu.Item>
               <Menu.Item key="user">

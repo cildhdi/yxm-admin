@@ -1,23 +1,9 @@
 import React from 'react';
-import { Table, Button, Modal, Typography } from 'antd'
+import { Table, Button, Modal, Typography, Divider } from 'antd'
 import { connect } from 'dva'
 import moment from 'moment';
-import marked from 'marked'
+import Preview from '../components/preview'
 const namespace = 'article';
-
-let renderer = new marked.Renderer();
-renderer.image = (href, title, text) => {
-  if (href === null) {
-    return text;
-  }
-
-  var out = '<img src="' + href + '" alt="' + text + '"';
-  if (title) {
-    out += ' title="' + title + '"';
-  }
-  out += 'width="100%"/>';
-  return out;
-}
 
 const mapStateToProps = (state) => {
   const props = state[namespace];
@@ -31,6 +17,12 @@ const mapDispatchToProps = (dispatch) => {
     onInit: () => {
       dispatch({
         type: `${namespace}/queryArticle`,
+      });
+    },
+    deleteArticle: (id) => {
+      dispatch({
+        type: `${namespace}/deleteArticle`,
+        payload: id
       });
     }
   };
@@ -75,16 +67,28 @@ class Article extends React.Component {
       title: '操作',
       key: 'Action',
       render: (text, record) => {
-        return <Button
-          onClick={() => {
-            this.setState({
-              showContent: true,
-              content: marked(record.Content, {
-                renderer: renderer
-              })
+        return <div>
+          <Button
+            onClick={() => {
+              this.setState({
+                showContent: true,
+                content: record.Content
+              });
+            }}
+          >预览</Button>
+          <Divider type='vertical' />
+          <Button type='danger' onClick={() => {
+            Modal.confirm({
+              title: '确定删除这篇文章吗？',
+              okText: '确定',
+              okType: 'danger',
+              cancelText: '取消',
+              onOk: () => {
+                this.props.deleteArticle(record.ID);
+              }
             });
-          }}
-        >预览</Button>;
+          }}>删除</Button>
+        </div>;
       }
     }
   ];
@@ -98,15 +102,7 @@ class Article extends React.Component {
   render() {
     return (<div>
       <Table dataSource={this.props.articles} columns={this.columns} rowKey='ID' />
-      <Modal
-        title="文章预览 (因解析库差异，不保证与微信小程序端显示一致)"
-        visible={this.state.showContent}
-        maskClosable={true}
-        onCancel={this.handleCancel}
-        footer={null}
-      >
-        <div id='content' dangerouslySetInnerHTML={{ __html: this.state.content }} />
-      </Modal>
+      <Preview visible={this.state.showContent} onCancel={this.handleCancel} content={this.state.content} />
     </div>);
   }
 }

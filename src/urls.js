@@ -1,10 +1,13 @@
+const prefix = '/api/admin';
+
 export default {
-    count: 'admin/readlog_count',
-    readlogs: 'admin/readlogs',
-    userCount: 'admin/user_count',
-    userInfo: 'admin/userinfo',
-    users: 'admin/users',
-    articles: 'admin/articles',
-    articleCount: 'admin/article_count',
-    publish: 'admin/publish'
+    count: prefix + '/readlog_count',
+    readlogs: prefix + '/readlogs',
+    userCount: prefix + '/user_count',
+    userInfo: prefix + '/userinfo',
+    users: prefix + '/users',
+    articles: prefix + '/articles',
+    articleCount: prefix + '/article_count',
+    publish: prefix + '/publish',
+    deleteArticle: prefix + '/delete_article'
 }

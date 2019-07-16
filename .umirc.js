@@ -8,7 +8,7 @@ export default {
       antd: true,
       dva: true,
       dynamicImport: false,
-      title: 'yxm-admin',
+      title: '上大英协 晨读打卡',
       dll: false,
 
       routes: {
@@ -23,8 +23,8 @@ export default {
     }],
   ],
   proxy: {
-    "/admin": {
-      "target": "https://yxm.cildhdi.cn/api/",
+    "/api": {
+      "target": "https://yxm.cildhdi.cn/",
       "changeOrigin": true,
     }
   }
