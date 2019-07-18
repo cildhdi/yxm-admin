@@ -1,4 +1,5 @@
 import urls from '../urls'
+import request from '../util'
 import { message } from 'antd'
 
 export default {
@@ -9,7 +10,7 @@ export default {
     effects: {
         *queryUsers({ payload }, { call, put }) {
             const hide = message.loading("加载数据中");
-            let res = yield call(fetch, urls.users, {
+            let res = yield call(request, urls.users, {
                 method: 'post'
             });
             if (res.ok) {

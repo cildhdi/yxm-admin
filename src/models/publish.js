@@ -1,4 +1,5 @@
 import urls from '../urls'
+import request from '../util'
 import { message } from 'antd'
 
 export default {
@@ -9,7 +10,7 @@ export default {
         *publishArticle({ payload }, { call, put }) {
             const hide = message.loading("发布中");
             const { time, content } = payload;
-            let res = yield call(fetch, urls.publish, {
+            let res = yield call(request, urls.publish, {
                 method: 'post',
                 body: JSON.stringify({
                     time: parseInt(time.unix()),

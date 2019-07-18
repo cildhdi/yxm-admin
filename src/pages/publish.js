@@ -80,7 +80,7 @@ class Publish extends React.Component {
                     <DatePicker onChange={this.dateChange} value={this.state.time} />
                 </Form.Item>
                 <Form.Item label="文章内容">
-                    <Input.TextArea onChange={this.contentChange} value={this.state.content} />
+                    <Input.TextArea onChange={this.contentChange} value={this.state.content} rows={15} />
                 </Form.Item>
                 <center>
                     <Button onClick={this.handlePreview} style={{ width: 100 }}>预览</Button>

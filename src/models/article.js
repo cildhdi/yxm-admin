@@ -1,4 +1,5 @@
 import urls from '../urls'
+import request from '../util'
 import { message } from 'antd'
 
 export default {
@@ -9,7 +10,7 @@ export default {
     effects: {
         *queryArticle({ payload }, { call, put }) {
             const hide = message.loading("加载数据中");
-            let res = yield call(fetch, urls.articles, {
+            let res = yield call(request, urls.articles, {
                 method: 'post'
             });
             if (res.ok) {
@@ -25,7 +26,7 @@ export default {
         },
         *deleteArticle({ payload: id }, { call, put }) {
             const hide = message.loading("删除中");
-            let res = yield call(fetch, urls.deleteArticle, {
+            let res = yield call(request, urls.deleteArticle, {
                 method: 'post',
                 body: JSON.stringify({
                     id: id

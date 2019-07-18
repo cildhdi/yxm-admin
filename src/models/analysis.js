@@ -1,4 +1,5 @@
 import urls from '../urls'
+import request from '../util'
 import { message } from 'antd'
 
 const oneDay = 24 * 60 * 60;
@@ -19,7 +20,7 @@ export default {
         *queryCounts({ payload }, { call, put }) {
             function* getCount(time) {
                 const now = Date.now() / 1000;
-                let res = yield call(fetch, urls.count, {
+                let res = yield call(request, urls.count, {
                     method: 'post',
                     body: JSON.stringify({
                         begin: parseInt(now - time),
@@ -36,7 +37,7 @@ export default {
             }
             const hide = message.loading("加载统计数据中");
             let userCount = 0, articleCount = 0;
-            let res = yield call(fetch, urls.userCount, {
+            let res = yield call(request, urls.userCount, {
                 method: 'post'
             });
             if (res.ok) {
@@ -46,7 +47,7 @@ export default {
                 }
             }
 
-            res = yield call(fetch, urls.articleCount, {
+            res = yield call(request, urls.articleCount, {
                 method: 'post'
             });
             if (res.ok) {
@@ -75,7 +76,7 @@ export default {
                 type: 'setRange',
                 payload: range
             });
-            let res = yield call(fetch, urls.readlogs, {
+            let res = yield call(request, urls.readlogs, {
                 method: 'post',
                 body: JSON.stringify({
                     begin: parseInt(Date.parse(range[0]) / 1000),
